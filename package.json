@@ -1,0 +1,25 @@
+{
+  "name": "village",
+  "version": "0.1.0",
+  "description": "Mind your village by giving your residents professions, collecting wealth and resources, unlocking new industries.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abel-baker/village.git"
+  },
+  "author": "Abel Baker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abel-baker/village/issues"
+  },
+  "homepage": "https://github.com/abel-baker/village#readme",
+  "devDependencies": {
+    "jest": "^27.5.1"
+  }
+}
