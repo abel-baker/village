@@ -11,7 +11,7 @@ test ('creates a villager object', () => {
   expect(luxon.DateTime.fromISO(villager.hatched).isValid).toBeTruthy();
 
   villager = new Villager({});
-  expect(villager.name).toBe('Noisome');
+  expect(villager.name).toBe('Guy');
 });
 
 // Has hunger level, food consumption
@@ -41,7 +41,6 @@ test ('has hunger level, eats food at 8, recovers hunger', () => {
   expect(regained).toBe(1);
 });
 
-
 // Has wealth(, can spend it?)
 test ('has wealth, can afford items & can spend money', () => {
   const villager = new Villager({ name: 'Galford' });
@@ -55,18 +54,18 @@ test ('has wealth, can afford items & can spend money', () => {
   expect(villager.spend(cart.price)).toBeFalsy();
   expect(villager.spend(coin.price)).toBeFalsy();
 
-  let wealth = villager.earn(1200);
+  let wealth = villager.earn(900);
 
-  expect(wealth).toBe(1200);
-  expect(villager.wealth).toBe(1200);
+  expect(villager.wealth).toBe(900);
   expect(villager.afford(cart)).toBeTruthy();
   expect(villager.afford(coin)).toBeTruthy();
   expect(villager.afford(800)).toBeTruthy();
+  expect(villager.afford(1200)).toBeFalsy();
 
   wealth = villager.spend(cart.price);
   
-  expect(wealth).toBe(400);
-  expect(villager.wealth).toBe(400);
+  expect(wealth).toBe(100);
+  expect(villager.wealth).toBe(100);
   expect(villager.afford(cart)).toBeFalsy();
   expect(villager.afford(coin)).toBeTruthy();
   expect(villager.spend(cart.price)).toBeFalsy();
@@ -94,6 +93,7 @@ test ('has an inventory, can receive items', () => {
   expect(candle.foundWithin(aragon.inventory)).toEqual([2]);
   expect(aragon.holds(candle)).toBeTruthy();
 });
+
 // Can lose items
 test ('can lose items', () => {
   const coin = new Item({ name: 'coin', value: 100 });
@@ -123,12 +123,9 @@ test ('can lose items', () => {
 
 
 // Has profession, can access its values
-
+test ('')
 
 // Has profession and current action
-
-
-// Has profession, can complete current
 
 
 // Has profession, can form a priority action

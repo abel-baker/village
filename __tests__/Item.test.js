@@ -8,6 +8,8 @@ test ('creates an item object', () => {
 
   expect(item.name).toBe('cart');
   expect(item.value).toEqual(800);
+  expect(item.price()).toEqual(800);
+  expect(item.price(true)).toEqual(400);
   // expect(Number(item.value)).toBe(800);
 });
 

@@ -1,9 +1,0 @@
-const professionData = {
-
-}
-
-class Villager {
-  constructor(config) {
-    
-  }
-}
