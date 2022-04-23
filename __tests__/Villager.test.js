@@ -160,8 +160,7 @@ test ('can form priorities from passed object', () => {
   expect(
     ['does something inscrutable',
     'does nothing in particular',
-    'does something farmerly',
-    'rests and recovers']
+    'does something farmerly']
   ).not.toContain(completedAction);
 });
 
@@ -181,7 +180,7 @@ test ('can inherit default values from child constructor', () => {
 
   const galford = new Farmer({ name: 'Galford' });
   expect(galford.action).toBe('idle');
-  expect(galford.completeAction()).toBe('does nothing in particular');
+  expect(galford.completeAction()).toBe('does something farmerly');
 });
 
 // Has profession, can complete profession actions
@@ -216,19 +215,6 @@ test ('can form profession priorities', () => {
     'rests and recovers']
   ).not.toContain(completedAction);
   
-  // const villager = new Villager({ name: 'Galford' });
-
-  // expect(villager.action = villager.priority({ 'rest': 1 }));
-  // expect(villager.action).toBe('rest');
-  // expect(villager.completeAction()).toBe('rests and recovers');
-
-
-  // expect(villager.action = villager.priority({ 'rest': 1, 'eat': 1 }));
-  // expect(['rest', 'eat']).toContain(villager.action);
-  // expect(
-  //   ['rests and recovers',
-  //   'eats']
-  // ).toContain(villager.completeAction());
 });
 
 
