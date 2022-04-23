@@ -124,7 +124,7 @@ test ('can lose items', () => {
 test (`has an action and can execute it,
   set another action according to priority`, () => {
 
-  const villager = new Villager({ name: 'Galford' });
+  let villager = new Villager({ name: 'Galford' });
   
   // No action specified on creation should fallback to idle
   expect(villager.action).toBe('idle');
@@ -139,6 +139,10 @@ test (`has an action and can execute it,
     'eats']
   ).toContain(villager.completeAction());
   expect(['idle','rest','eat']).toContain(villager.action);
+
+  villager = new Villager({ name: 'Galford', action: 'lute' });
+  expect(villager.completeAction()).toBe('does something inscrutable');
+
 });
 
 // Can form a priority action from passed object
@@ -193,7 +197,6 @@ test ('can complete profession actions', () => {
   expect(farmer.completeAction()).toBe('plows and sows seeds');
 });
 
-
 // Has profession, can form a priority action
 test ('can form profession priorities', () => {
   const farmer = new Farmer();
@@ -203,18 +206,19 @@ test ('can form profession priorities', () => {
 
   farmer.action = farmer.priority({ 'sow': 1, 'eat': 1});
   expect(['sow', 'eat']).toContain(farmer.action);
+
   let completedAction = farmer.completeAction();
   expect(
     ['plows and sows seeds',
     'eats']
   ).toContain(completedAction);
+
   expect(
     ['does something inscrutable',
     'does nothing in particular',
     'does something farmerly',
     'rests and recovers']
   ).not.toContain(completedAction);
-  
 });
 
 
