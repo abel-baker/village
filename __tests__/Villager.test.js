@@ -117,13 +117,35 @@ test ('can lose items', () => {
 
   expect(galford.drop(coin)).toBeTruthy();
   expect(galford.holds(coin)).toBeFalsy();
-})
+});
+
+// Has a present action; can complete it
+test ('has an action and can execute it, return to idle', () => {
+  const villager = new Villager({ name: 'Galford' });
+  
+  // No action specified on creation should fallback to idle
+  expect(villager.action).toBe('idle');
+  // idle in particular returns a certain string; sets action to idle or rest
+  expect(villager.completeAction()).toBe('does nothing in particular');
+  expect(['idle','rest','eat']).toContain(villager.action);
+
+  // these three possible actions also only lead to these three
+  expect(
+    ['does nothing in particular',
+    'rests and recovers',
+    'eats']
+  ).toContain(villager.completeAction());
+  expect(['idle','rest','eat']).toContain(villager.action);
+});
+
+// Can form a priority action
+
 
 // Has experience level (tied to profession action?)
 
 
 // Has profession, can access its values
-test ('')
+
 
 // Has profession and current action
 
