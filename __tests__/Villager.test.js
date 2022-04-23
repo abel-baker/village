@@ -1,4 +1,5 @@
 const Villager = require('../lib/Villager');
+const Farmer = require('../lib/professions/Farmer')
 const Item = require('../lib/Item');
 const luxon = require('../js/luxon.min.js');
 
@@ -120,7 +121,9 @@ test ('can lose items', () => {
 });
 
 // Has a present action; can complete it
-test ('has an action and can execute it, return to idle', () => {
+test (`has an action and can execute it,
+  set another action according to priority`, () => {
+
   const villager = new Villager({ name: 'Galford' });
   
   // No action specified on creation should fallback to idle
@@ -138,16 +141,95 @@ test ('has an action and can execute it, return to idle', () => {
   expect(['idle','rest','eat']).toContain(villager.action);
 });
 
-// Can form a priority action
+// Can form a priority action from passed object
+test ('can form priorities from passed object', () => {
+  const villager = new Villager({ name: 'Galford' });
+
+  villager.action = villager.priority({ 'rest': 1 });
+  expect(villager.action).toBe('rest');
+  expect(villager.completeAction()).toBe('rests and recovers');
 
 
-// Has experience level (tied to profession action?)
+  expect(villager.action = villager.priority({ 'rest': 1, 'eat': 1 }));
+  expect(['rest', 'eat']).toContain(villager.action);
+  let completedAction = villager.completeAction();
+  expect(
+    ['rests and recovers',
+    'eats']
+  ).toContain(completedAction);
+  expect(
+    ['does something inscrutable',
+    'does nothing in particular',
+    'does something farmerly',
+    'rests and recovers']
+  ).not.toContain(completedAction);
+});
 
+
+/// PROFESSION AND INHERITANCE ///
 
 // Has profession, can access its values
+test ('can inherit default values from child constructor', () => {
+  const farmer = new Farmer();
 
+  expect(farmer.name).toBe('Alain');
+  expect(farmer.hungry_at).toBe(6);
 
-// Has profession and current action
+  const aragon = new Farmer({ name: 'Aragon' });
+  expect(aragon.name).toBe('Aragon');
+  expect(aragon.produce).toBe(0);
+
+  const galford = new Farmer({ name: 'Galford' });
+  expect(galford.action).toBe('idle');
+  expect(galford.completeAction()).toBe('does nothing in particular');
+});
+
+// Has profession, can complete profession actions
+test ('can complete profession actions', () => {
+  const farmer = new Farmer();
+
+  expect(farmer.completeAction()).toBe('does something farmerly');
+
+  farmer.action = 'sow';
+  expect(farmer.completeAction()).toBe('plows and sows seeds');
+});
 
 
 // Has profession, can form a priority action
+test ('can form profession priorities', () => {
+  const farmer = new Farmer();
+
+  farmer.action = farmer.priority({ 'sow': 1 });
+  expect(farmer.action).toBe('sow');
+
+  farmer.action = farmer.priority({ 'sow': 1, 'eat': 1});
+  expect(['sow', 'eat']).toContain(farmer.action);
+  let completedAction = farmer.completeAction();
+  expect(
+    ['plows and sows seeds',
+    'eats']
+  ).toContain(completedAction);
+  expect(
+    ['does something inscrutable',
+    'does nothing in particular',
+    'does something farmerly',
+    'rests and recovers']
+  ).not.toContain(completedAction);
+  
+  // const villager = new Villager({ name: 'Galford' });
+
+  // expect(villager.action = villager.priority({ 'rest': 1 }));
+  // expect(villager.action).toBe('rest');
+  // expect(villager.completeAction()).toBe('rests and recovers');
+
+
+  // expect(villager.action = villager.priority({ 'rest': 1, 'eat': 1 }));
+  // expect(['rest', 'eat']).toContain(villager.action);
+  // expect(
+  //   ['rests and recovers',
+  //   'eats']
+  // ).toContain(villager.completeAction());
+});
+
+
+// Has experience value
