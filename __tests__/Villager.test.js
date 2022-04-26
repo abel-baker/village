@@ -129,7 +129,7 @@ test (`has an action and can execute it,
   // No action specified on creation should fallback to idle
   expect(villager.action).toBe('idle');
   // idle in particular returns a certain string; sets action to idle or rest
-  expect(villager.completeAction()).toBe('does nothing in particular');
+  expect(villager.completeAction()).toContain('does nothing in particular');
   expect(['idle','rest','eat']).toContain(villager.action);
 
   // these three possible actions also only lead to these three
@@ -141,7 +141,7 @@ test (`has an action and can execute it,
   expect(['idle','rest','eat']).toContain(villager.action);
 
   villager = new Villager({ name: 'Galford', action: 'lute' });
-  expect(villager.completeAction()).toBe('does something inscrutable');
+  expect(villager.completeAction()).toContain('does something inscrutable');
 
 });
 
@@ -159,7 +159,7 @@ test ('can form priorities from passed object', () => {
   let completedAction = villager.completeAction();
   expect(
     ['rests and recovers',
-    'eats']
+    'eats a meal']
   ).toContain(completedAction);
   expect(
     ['does something inscrutable',
@@ -194,7 +194,7 @@ test ('can complete profession actions', () => {
   expect(farmer.completeAction()).toBe('does something farmerly');
 
   farmer.action = 'sow';
-  expect(farmer.completeAction()).toBe('plows and sows seeds');
+  expect(farmer.completeAction()).toBe('sows seeds');
 });
 
 // Has profession, can form a priority action
@@ -209,8 +209,8 @@ test ('can form profession priorities', () => {
 
   let completedAction = farmer.completeAction();
   expect(
-    ['plows and sows seeds',
-    'eats']
+    ['sows seeds',
+    'eats a meal']
   ).toContain(completedAction);
 
   expect(

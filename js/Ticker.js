@@ -9,9 +9,12 @@ class Ticker extends EventEmitter {
     // DateTime representing the beginning of measurement; usually midnight
     this.base = obj.base? obj.base : DateTime.now().startOf('day');
 
+    this.group_length = obj.group_length? obj.group_length : 4;
+
     this.interval;
     this.latest = this.latestTick();
   }
+
 
   latestTick() {
     let duration = Interval.fromDateTimes(this.base, DateTime.now()).toDuration();
@@ -19,13 +22,22 @@ class Ticker extends EventEmitter {
     return this.base.plus(offset);
   }
 
+
   ticksSince(then) {
     return Interval.fromDateTimes(then, DateTime.now()).splitBy(this.tick).length - 1;
   }
-
   ticked(then) {
     return this.ticksSince(then) >= 1;
   }
+
+
+  tickGroup() {
+    return Math.floor(this.ticksSince(this.base) / this.group_length);
+  }
+  tickPosition() {
+    return this.ticksSince(this.base) % this.group_length;
+  }
+
 
   start() {
     let self = this;
@@ -35,7 +47,7 @@ class Ticker extends EventEmitter {
         self.latest = self.latestTick();
 
         console.log(``);
-        console.log(`Tick!: ${self.latest.toLocaleString(DateTime.TIME_WITH_SECONDS)}`);
+        console.log(`Tick!: ${self.latest.toLocaleString(DateTime.TIME_WITH_SECONDS)} ${self.tickGroup()}:${self.tickPosition()}`);
         self.emit('tick', self.latest);
       }
     }, 1000)

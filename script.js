@@ -6,14 +6,14 @@ const EventEmitter = require('events');
 
 console.log(`START: ${DateTime.now().toLocaleString(DateTime.TIME_WITH_SECONDS)}`);
 
-const ticker = new Ticker({ tick: Duration.fromObject({ minutes: 1 }) });
+const ticker = new Ticker({ tick: Duration.fromObject({ seconds: 5 }) });
 let latest = ticker.latestTick();
 
-console.log(`LATEST: ${latest.toLocaleString(DateTime.TIME_WITH_SECONDS)}`);
+console.log(`LATEST: ${latest.toLocaleString(DateTime.TIME_WITH_SECONDS)} ${ticker.tickGroup()}:${ticker.tickPosition()}`);
 
 const james = new Farmer({ name: 'James' });
 const galford = new Farmer({ name: 'Galford' });
-james.listenTo(ticker);
+// james.listenTo(ticker);
 galford.listenTo(ticker);
 
 ticker.start();
