@@ -1,7 +1,7 @@
 const Villager = require('../lib/Villager');
 const Farmer = require('../lib/professions/Farmer')
 const Item = require('../lib/Item');
-const luxon = require('../js/luxon.min.js');
+const { DateTime, Interval, Duration } = require('../js/luxon.min.js');
 
 
 // Has name, creation date
@@ -9,7 +9,7 @@ test ('creates a villager object', () => {
   let villager = new Villager({ name: 'Alain' });
 
   expect(villager.name).toBe('Alain');
-  expect(luxon.DateTime.fromISO(villager.hatched).isValid).toBeTruthy();
+  expect(DateTime.fromISO(villager.hatched).isValid).toBeTruthy();
 
   villager = new Villager({});
   expect(villager.name).toBe('Guy');
