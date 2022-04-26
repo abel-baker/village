@@ -42,6 +42,4 @@ class Ticker extends EventEmitter {
   }
 }
 
-class TickListener extends EventEmitter {}
-
-module.exports = { Ticker, TickListener };
+module.exports = { Ticker };
