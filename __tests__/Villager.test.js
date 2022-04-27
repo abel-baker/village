@@ -11,7 +11,7 @@ test ('creates a villager object', () => {
   expect(villager.name).toBe('Alain');
   expect(DateTime.fromISO(villager.hatched).isValid).toBeTruthy();
 
-  villager = new Villager({});
+  villager = new Villager();
   expect(villager.name).toBe('Guy');
 });
 
@@ -136,7 +136,7 @@ test (`has an action and can execute it,
   expect(
     ['does nothing in particular',
     'rests and recovers',
-    'eats']
+    'eats a meal']
   ).toContain(villager.completeAction());
   expect(['idle','rest','eat']).toContain(villager.action);
 

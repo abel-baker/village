@@ -5,13 +5,13 @@ const { DateTime, Interval, Duration } = require('../js/luxon.min.js');
 
 // Has name, creation date
 test ('creates a village object', () => {
-  let village = new Village({ name: 'Zarma' });
+  const sibon = new Village();
+  expect(sibon.name).toBe('Sibon');
 
-  expect(village.name).toBe('Zarma');
-  expect(DateTime.fromISO(village.founded).isValid).toBeTruthy();
+  const zarma = new Village({ name: 'Zarma' });
 
-  village = new Village();
-  expect(village.name).toBe('Sibon');
+  expect(zarma.name).toBe('Zarma');
+  expect(DateTime.fromISO(zarma.founded).isValid).toBeTruthy();
 });
 
 // Wealth is earned by resource transactions (sales) and reflects overall
@@ -26,6 +26,8 @@ test ('has wealth, earns and spends', () => {
 
   // Return false if unable to make transaction
   expect(village.spend(200)).toBeFalsy();
+  // Return new wealth value if successful
+  expect(village.spend(50)).toBe(130);
 });
 
 // Resources include basic food, basic materials, crafted materials and
@@ -33,15 +35,24 @@ test ('has wealth, earns and spends', () => {
 test ('has basic resources, receives and spends them', () => {
   let sibon = new Village();
 
-  expect(sibon.resources['food']).toBe(0);
-  expect(sibon.receive({ food: 20 })).toBe({ food: 20 });
-  expect(sibon.reduce({ food: 5 })).toBe({ food: 15 });
+  expect(sibon.goods['food']).toBeUndefined();
 
-  expect(sibon.receive({ wood: 10, stone: 12 }));
-  expect(sibon.resources['wood']).toBe(10);
+  // Returns an object containing updated values of modified goods
+  expect(sibon.receive({ food: 8 })).toEqual({ food: 8 });
+  expect(sibon.receive({ food: 12 })).toEqual({ food: 20 });
+
+  // Returns an object containing updated values; or false if unable to make transaction
+  expect(sibon.reduce({ food: 5 })).toEqual({ food: 15 });
+  expect(sibon.reduce({ stone: 5 })).toBeFalsy();
+  expect(sibon.reduce({ food: 20 })).toBeFalsy();
+
+  expect(sibon.receive({ wood: 10, stone: 12 })).toEqual({ wood: 10, stone: 12 });
+  expect(sibon.goods['wood']).toBe(10);
+  expect(sibon.goods['stone']).toBe(12);
   expect(sibon.count('wood')).toBe(10);
-  expect(sibon.resources['stone']).toBe(12);
-  expect(sibon.count('stone')).toBe(12);
+  // expect(sibon.count(['wood'])).toEqual({ wood: 10 });
+  // expect(sibon.count('wood','stone')).toEqual({ wood: 10, stone: 12 });
+  // expect(sibon.count(['wood','stone'])).toEqual({ wood: 10, stone: 12 });
 });
 
 
@@ -55,17 +66,17 @@ test ('has Villagers, can give and receive goods', () => {
 
   expect(Object.keys(guy.goods).length).toBe(0);
   expect(guy.goods['stone']).toBe(0);
-  expect(Object.keys(sibon.resources).length).toBe(0);
-  expect(sibon.resources['stone']).toBe(0);
+  // expect(Object.keys(sibon.goods).length).toBe(0);
+  expect(sibon.goods['stone']).toBe(0);
 
   expect(sibon.provide(guy, { stone: 5 })).toBeFalsy();
   expect(guy.goods['stone']).toBe(0);
-  expect(sibon.resources['stone']).toBe(0);
+  expect(sibon.goods['stone']).toBe(0);
 
   let shipment = sibon.receive({ stone: 15, wood: 8 });
   expect(sibon.provide(guy, { stone: 5 })).toBeTruthy();
   expect(guy.goods['stone']).toBe(5);
-  expect(sibon.resources['stone']).toBe(10);
+  expect(sibon.goods['stone']).toBe(10);
 });
 
 
